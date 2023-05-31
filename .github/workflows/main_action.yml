@@ -29,7 +29,10 @@ jobs:
 
       - name: Remove unused imports with autoflake
         run: autoflake --in-place --remove-all-unused-imports --remove-unused-variables --recursive .
-
+    
+      - name: Remove redundant spaces
+        run: python -m reindent -r .
+        
       - name: Configure Git
         run: |
           git config --local user.email "${{ github.actor }}@users.noreply.github.com"
