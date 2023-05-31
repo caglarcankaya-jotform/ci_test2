@@ -2,30 +2,37 @@ name: Format code
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
 
 jobs:
   format:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Format code with black
-        run: |
-          pip install black 
-          black .
-      - name: Sort imports with isort
-        run: |
-          pip install isort
-          isort .
-      - name: Remove unused imports with autoflake
-        run: |
-          pip install autoflake
-          autoflake --in-place --remove-all-unused-imports --remove-unused-variables --recursive .
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v4
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
         with:
-          author_name: ${{ github.actor }}
-          author_email: ${{ github.actor }}@users.noreply.github.com
-          message: "Format code with black"
-          add: "."
-          branch: ${{ github.ref }}
+          python-version: 3.x # Specify the Python version you need
+
+      - name: Install dependencies
+        run: |
+          pip install black isort autoflake
+
+      - name: Format code with black
+        run: black .
+
+      - name: Sort imports with isort
+        run: isort .
+
+      - name: Remove unused imports with autoflake
+        run: autoflake --in-place --remove-all-unused-imports --remove-unused-variables --recursive .
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --local user.name "${{ github.actor }}"
+          git add .
+          git commit -m "Format code with black"
