@@ -15,7 +15,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.x
 
       - name: Install dependencies
         run: |
@@ -42,7 +42,4 @@ jobs:
       
       - name: Push changes
         run: |
-          gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
-          gh repo view --json ssh_url -q . | jq -r .ssh_url | xargs gh repo clone
-          cd "$(basename -s .git ./"$GITHUB_REPOSITORY")"
-          git push origin "$GITHUB_REF"
+          git push origin "${{ github.ref }}"
