@@ -3,6 +3,7 @@ def   greet(   name):
 
 def add_numbers(  num1, num2  ):
     result = num1   +   num2
+    a=2
     return result
 
 def main():
