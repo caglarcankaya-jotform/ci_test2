@@ -12,14 +12,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          python-version: 3.8 # Specify the Python version you need
+          node-version: 16
 
       - name: Install dependencies
         run: |
-          pip install black isort autoflake
+          npm install --global black isort autoflake
 
       - name: Format code with black
         run: black .
