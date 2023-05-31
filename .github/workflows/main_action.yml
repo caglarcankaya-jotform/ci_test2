@@ -15,7 +15,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8 # Specify the Python version you need
+          python-version: 3.8
 
       - name: Install dependencies
         run: |
@@ -30,9 +30,19 @@ jobs:
       - name: Remove unused imports with autoflake
         run: autoflake --in-place --remove-all-unused-imports --remove-unused-variables --recursive .
 
-      - name: Commit changes
+      - name: Configure Git
         run: |
           git config --local user.email "${{ github.actor }}@users.noreply.github.com"
           git config --local user.name "${{ github.actor }}"
+      
+      - name: Commit changes
+        run: |
           git add .
           git commit -m "Format code with black"
+      
+      - name: Push changes
+        run: |
+          gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+          gh repo view --json ssh_url -q . | jq -r .ssh_url | xargs gh repo clone
+          cd "$(basename -s .git ./"$GITHUB_REPOSITORY")"
+          git push origin "$GITHUB_REF"
