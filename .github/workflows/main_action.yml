@@ -19,7 +19,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install black isort autoflake
+          pip install black isort autoflake autopep8
 
       - name: Format code with black
         run: black .
@@ -31,7 +31,7 @@ jobs:
         run: autoflake --in-place --remove-all-unused-imports --remove-unused-variables --recursive .
     
       - name: Remove redundant spaces
-        run: python -m reindent -r .
+        run: autopep8 --in-place --recursive .
         
       - name: Configure Git
         run: |
