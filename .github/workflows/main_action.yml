@@ -19,16 +19,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm install --global black isort autoflake
+          npm install --global black isort
 
       - name: Format code with black
         run: black .
 
       - name: Sort imports with isort
         run: isort .
-
-      - name: Remove unused imports with autoflake
-        run: autoflake --in-place --remove-all-unused-imports --remove-unused-variables --recursive .
 
       - name: Commit changes
         run: |
